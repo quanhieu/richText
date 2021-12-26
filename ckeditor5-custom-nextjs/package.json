@@ -39,6 +39,7 @@
     "@ckeditor/ckeditor5-typing": "^22.0.0",
     "@ckeditor/ckeditor5-upload": "^22.0.0",
     "@zeit/next-css": "^1.0.1",
+    "html-react-parser": "^1.4.4",
     "next": "^9.5.3",
     "next-images": "^1.4.1",
     "react": "^16.13.1",

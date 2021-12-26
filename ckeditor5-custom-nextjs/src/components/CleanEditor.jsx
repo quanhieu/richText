@@ -1,4 +1,5 @@
-import React, { useEffect, useState, useRef, useCallback } from 'react'
+import React, { useEffect, useState, useRef, useCallback, useMemo } from 'react'
+import parse from 'html-react-parser'
 import CKEditor from '@ckeditor/ckeditor5-react'
 import ClassicEditor from '@ckeditor/ckeditor5-editor-classic/src/classiceditor'
 import Essentials from '@ckeditor/ckeditor5-essentials/src/essentials'
@@ -31,7 +32,7 @@ import Code from '@ckeditor/ckeditor5-basic-styles/src/code'
 const Editor = ({ data }) => {
   const componentRef = useRef('')
   const wrapComponentRef = useRef('')
-
+  const [isPreview, setIsPreview] = useState('')
   const [isLayoutReady, setIsLayoutReady] = useState(false)
 
   useEffect(() => {
@@ -43,6 +44,9 @@ const Editor = ({ data }) => {
     const styleTable = `<style>
       svg {
         // display: none;
+      }
+      .ck-widget__selection-handle {
+        display: none;
       }
       .ck-reset_all {
         display: none;
@@ -84,14 +88,17 @@ const Editor = ({ data }) => {
   }, [])
 
   const selectDomValue = useCallback(() => {
-    const query = wrapComponentRef.current.getElementsByClassName('ck-content')[0].innerHTML
-    // let query = wrapComponentRef.current.getElementsByClassName('ck-editor__main')[0].innerHTML
+    if (!!wrapComponentRef && !!wrapComponentRef.current) {
+      const query = wrapComponentRef.current.getElementsByClassName('ck-content')[0].innerHTML
+      // let query = wrapComponentRef.current.getElementsByClassName('ck-editor__main')[0].innerHTML
 
-    const doc = new DOMParser().parseFromString(query, 'text/html')
-    const formatDoc = doc.body.innerHTML
-    console.log('formatDoc ', formatDoc)
+      const doc = new DOMParser().parseFromString(query, 'text/html')
+      const formatDoc = doc.body.innerHTML
+      console.log('formatDoc ', formatDoc)
 
-    return formatHtml(formatDoc)
+      return formatHtml(formatDoc)
+    }
+    return ''
   }, [])
 
   return (
@@ -126,6 +133,7 @@ const Editor = ({ data }) => {
         <button onClick={() => console.log('Show log ', componentRef.current)}>Log</button>
         <p>Click above button opens print preview with these words on page</p>
       </div>
+      <hr class="solid"></hr>
 
       {isLayoutReady ? <CKEditor
 
@@ -192,6 +200,7 @@ const Editor = ({ data }) => {
             'bulletedList',
             'numberedList',
             'blockQuote',
+            'code',
             '|',
             'link',
             'insertTable',
@@ -200,7 +209,6 @@ const Editor = ({ data }) => {
             '|',
             'undo',
             'redo',
-            'code',
           ],
           heading: {
             options: [
@@ -299,6 +307,18 @@ const Editor = ({ data }) => {
         }}
         editor={ClassicEditor}
       /> : null}
+
+      <div>
+        <hr class="rounded"></hr>
+        <p></p>
+        <button onClick={() => {
+          setIsPreview(selectDomValue())
+        }}>Preview bellow</button>
+        <div style={{ padding: '35px' }}>
+          { isPreview && parse(isPreview)}
+        </div>
+      </div>
+      <hr class="rounded"></hr>
     </div>
   )
 }
