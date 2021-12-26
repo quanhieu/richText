@@ -96,7 +96,7 @@ const Editor = ({ data }) => {
 
   return (
     <div className='wrapComponent' ref={wrapComponentRef}>
-      <div>
+      <div className='group-btn-action'>
         <button onClick={() => {
           window.print()
         }}>Print</button>
