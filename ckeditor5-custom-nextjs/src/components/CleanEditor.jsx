@@ -27,11 +27,6 @@ import Indent from '@ckeditor/ckeditor5-indent/src/indent'
 import IndentBlock from '@ckeditor/ckeditor5-indent/src/indentblock'
 import Base64UploadAdapter from '@ckeditor/ckeditor5-upload/src/adapters/base64uploadadapter'
 import Code from '@ckeditor/ckeditor5-basic-styles/src/code'
-// import CKFinder from "@ckeditor/ckeditor5-ckfinder/src/ckfinder"
-// import DecoupledEditor from '@ckeditor/ckeditor5-build-decoupled-document'
-// import HorizontalLine from '@ckeditor/ckeditor5-horizontal-line/src/horizontalline';
-// import CodeBlock from '@ckeditor/ckeditor5-code-block/src/codeblock'
-// import ImageInsert from '@ckeditor/ckeditor5-image/src/imageinsert'
 
 const Editor = ({ data }) => {
   const componentRef = useRef('')
@@ -47,6 +42,9 @@ const Editor = ({ data }) => {
     let updateContent = newContent;
     const styleTable = `<style>
       svg {
+        // display: none;
+      }
+      .ck-reset_all {
         display: none;
       }
       .media {
@@ -82,90 +80,18 @@ const Editor = ({ data }) => {
 
   const updateContent = useCallback((newContent) => {
     console.log('newContent', newContent)
-
     componentRef.current = formatHtml(newContent)
-
-    // let updateContent = newContent;
-    // // updateContent += `<iframe width="560" height="315" src="https://www.youtube.com/embed/bfWx38Pq5cY" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`
-
-    // const styleTable = `<style>
-    //   .table {
-    //     display: flex;
-    //     justify-content: center;
-    //   }
-    //   .image {
-    //     display: block;
-    //     margin-left: auto;
-    //     margin-right: auto;
-    //   }
-    //   img {
-    //     max-width: 100%;
-    //   }
-
-    //   table, td, tr, .flagtable {
-    //     border: 1px solid black;
-    //     border-collapse: collapse;
-    //   }
-    // </style>`;
-    // if (updateContent.indexOf('.flagtable') === -1) {
-    //   updateContent += styleTable;
-    // }
-    // componentRef.current = updateContent
   }, [])
 
   const selectDomValue = useCallback(() => {
-    // const test = wrapComponentRef.current.classList.remove('ck-reset_all')
-    // console.log('test ', test)
-
-    // let elem = wrapComponentRef.current.querySelector('.ck-reset_all')
-    // elem.parentNode.removeChild(elem)
-    // const newElement = elem[0].innerHTML
-    // console.log('elem ', elem)
-
     const query = wrapComponentRef.current.getElementsByClassName('ck-content')[0].innerHTML
     // let query = wrapComponentRef.current.getElementsByClassName('ck-editor__main')[0].innerHTML
 
     const doc = new DOMParser().parseFromString(query, 'text/html')
     const formatDoc = doc.body.innerHTML
     console.log('formatDoc ', formatDoc)
-    // return formatDoc
-
 
     return formatHtml(formatDoc)
-    // let updateContent = formatDoc;
-    // const styleTable = `<style>
-    //   svg {
-    //     display: none;
-    //   }
-    //   .media {
-    //     display: block;
-    //     margin-left: auto;
-    //     margin-right: auto;
-    //     width: 50%;
-    //   }
-
-    //   .table {
-    //     display: flex;
-    //     justify-content: center;
-    //   }
-    //   .image {
-    //     display: block;
-    //     margin-left: auto;
-    //     margin-right: auto;
-    //   }
-    //   img {
-    //     max-width: 100%;
-    //   }
-
-    //   table, td, tr, .flagtable {
-    //     border: 1px solid black;
-    //     border-collapse: collapse;
-    //   }
-    // </style>`;
-    // if (updateContent.indexOf('.flagtable') === -1) {
-    //   updateContent += styleTable;
-    // }
-    // return updateContent
   }, [])
 
   return (
@@ -202,17 +128,6 @@ const Editor = ({ data }) => {
       </div>
 
       {isLayoutReady ? <CKEditor
-      // editor={DecoupledEditor}
-      //   onInit={(editor) => {	
-      //     editor.ui.view.editable.element.parentElement.insertBefore(
-      //       editor.ui.view.toolbar.element,
-      //       editor.ui.view.editable.element
-      //     );
-      //   }}
-        // onChange={(event, editor) => {
-        // const data = editor.getData();
-        // this.onInputChange('body')(data);
-        // }}
 
         data={data}
         onInit={editor =>{
@@ -220,10 +135,6 @@ const Editor = ({ data }) => {
           }
         }
         onChange={(event, editor) => {
-          // console.log('Change', { event, editor })
-          // console.log('data ', editor.getData())
-          // componentRef.current = editor.getData()
-
           updateContent(editor.getData())
 
           selectDomValue()
@@ -262,9 +173,6 @@ const Editor = ({ data }) => {
             TableToolbar,
             TextTransformation,
             Code,
-            // CKFinder,
-            // CodeBlock,
-            // HorizontalLine,
           ],
           toolbar: [
             'heading',
@@ -293,22 +201,7 @@ const Editor = ({ data }) => {
             'undo',
             'redo',
             'code',
-            // 'ckfinder',
-            // 'uploadImage',
-            // 'codeBlock',
-            // 'horizontalLine',
-            'pageBreak',
           ],
-          // ckfinder: {
-          //   // Feature configuration.
-          //   // Upload the images to the server using the CKFinder QuickUpload command.
-          //   uploadUrl: 'https://example.com/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Images&responseType=json',
-          //   // Define the CKFinder configuration (if necessary).
-          //   options: {
-          //     resourceType: 'Images'
-          //   },
-          //   openerMethod: 'popup'
-          // },
           heading: {
             options: [
               {
@@ -409,6 +302,5 @@ const Editor = ({ data }) => {
     </div>
   )
 }
-
 
 export default Editor
