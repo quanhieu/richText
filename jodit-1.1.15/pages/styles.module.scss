@@ -1,0 +1,27 @@
+.wrapper {
+  // .jodit-container:not(.jodit_inline) {
+  //   border: 1px solid #dadada;
+  //   //background-color: var(--color-background-default);
+  //   border-radius: 3px;
+  
+  //   .jodit-workplace {
+  //     max-height: 100%;
+  //     border: 0 solid #dadada;
+  //   }
+  
+  //   &.jodit_disabled {
+  //     background: #dadada;
+  
+  //     .jodit-workplace {
+  //       opacity: 0.4;
+  //     }
+  //   }
+  // }
+  :global {
+    .jodit-container:not(.jodit_inline) {
+      background-color: #fff !important;
+      border: 1px solid #dadada;
+      border-radius: 3px;
+    }
+  }
+}
